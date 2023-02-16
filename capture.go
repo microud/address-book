@@ -39,12 +39,11 @@ func NewCapture(db *Database, params CaptureParams) (*Capture, error) {
 func (c *Capture) Run() {
 	source := gopacket.NewPacketSource(c.Handle, c.Handle.LinkType())
 	for packet := range source.Packets() {
-		//fmt.Println(packet.String())
 		addresses := c.getAddresses(packet)
 		for _, address := range addresses {
 			err := c.db.SaveAddress(address)
 			if err != nil {
-				println("save address failed:", err.Error())
+				log.Printf("Save address %s(%s) failed: %s", address.IP, address.MAC, err.Error())
 			}
 		}
 	}
@@ -146,7 +145,6 @@ func (c *Capture) getAddresses(packet gopacket.Packet) []Address {
 	}
 
 	if dhcpLayer := packet.Layer(layers.LayerTypeDHCPv4); dhcpLayer != nil {
-		println("capture dhcp packet")
 		return c.getAddressFromDHCPPacket(packet)
 	}
 
