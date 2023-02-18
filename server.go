@@ -26,7 +26,7 @@ func (s *Server) Run() {
 		}
 
 		if mac, ok := ctx.GetQuery("mac"); ok {
-			address, err = s.db.FindAddressByIP(mac)
+			address, err = s.db.FindAddressByMAC(mac)
 		}
 
 		if err != nil {
