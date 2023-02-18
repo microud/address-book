@@ -2,6 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
+	"net"
+	"net/http"
 )
 
 type Server struct {
@@ -56,5 +59,10 @@ func (s *Server) Run() {
 		ctx.JSON(200, addresses)
 	})
 
-	router.Run(":9988")
+	server := &http.Server{Handler: router}
+	l, err := net.Listen("tcp4", ":8080")
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = server.Serve(l)
 }
