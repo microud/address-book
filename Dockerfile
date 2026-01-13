@@ -8,7 +8,7 @@ COPY . .
 
 RUN GOOS=linux go build -ldflags '-s -w' -o bin/address-book
 
-FROM alpine:3.17
+FROM alpine:3.23.2
 
 WORKDIR /app
 
